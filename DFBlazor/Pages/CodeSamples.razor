@@ -1,0 +1,190 @@
+﻿@page "/CodeSamples"
+
+<PageTitle>Code Samples</PageTitle>
+
+<h1>Code Samples</h1>
+
+<p>My nonexistant github profile can be found here: <a href="https://github.com/dan4ist" target="_blank">https://github.com/dan4ist</a></p>
+
+<p>See below for some common interview questions answered.</p>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header">
+                Two Sum Problem
+            </div>
+            <div class="card-body">
+                <div class="card-text">
+                    <p>Explanation: find two numbers in an array such that their sum is equal to a target value.</p>
+                    <p>Answer: O(n)</p>
+                    @if (twoSum.Value != null) {
+                        <CodeSnippet>@twoSum</CodeSnippet>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header">
+                Maximum Stock Profits
+            </div>
+            <div class="card-body">
+                <div class="card-text">
+                    <p>Explanation: find the maximum profit that can be made by buying and selling a single stock given an array of stock prices.</p>
+                    <p>Answer: O(n)</p>
+                    @if (maxProfit.Value != null) {
+                        <CodeSnippet>@maxProfit</CodeSnippet>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header">
+                Contains Duplicate
+            </div>
+            <div class="card-body">
+                <div class="card-title">
+                    Explanation: Determine if a number appears more than once in an array.
+                </div>
+                <div class="card-text">
+                    <p>Answer: O(n)</p>
+                    <CodeSnippet>@containsDuplicate</CodeSnippet>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header">
+                Product of Array Except Self
+            </div>
+            <div class="card-body">
+                <div class="card-title">
+                    Explanation: find the product of all elements in an array except the element at the current index
+                </div>
+                <div class="card-text">
+                    <p>Answer: O(n)</p>
+                    <CodeSnippet>@productExceptSelf</CodeSnippet>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*<div class="row">
+    <div class="col-sm-6">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header">
+                Header
+            </div>
+            <div class="card-body">
+                <div class="card-title">
+                    Title
+                </div>
+                <div class="card-text">
+                    Text
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header">
+                Header
+            </div>
+            <div class="card-body">
+                <div class="card-title">
+                    Title
+                </div>
+                <div class="card-text">
+                    Text
+                </div>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+@code {
+    [Inject] private IJSRuntime _js { get; set; }
+
+    private MarkupString twoSum = new MarkupString(@"
+        int[] TwoSum(int[] arr, int target) {
+            Dictionary<int,int> indices = new Dictionary<int,int>();
+
+            for (int i = 0; i < arr.Length; i++) {
+                int num = arr[i];
+
+                if (indices.ContainsKey(target - num)) {
+                    return new int[] { indices[target - num], i };
+                }
+                indices[num] = i;
+            }
+
+            return new int[0];
+        }
+        ");
+
+    private MarkupString maxProfit = new MarkupString(@"
+        int MaxProfit(int[] prices) {
+            int minPrice = int.MaxValue;
+            int maxProfit = 0;
+
+            for (int i = 0; i < prices.Length; i++) {
+               int price = prices[i];
+               minPrice = Math.Min(minPrice, price);
+               maxProfit = Math.Max(maxProfit, price - minPrice);
+            }
+
+            return maxProfit;
+        }
+    ");
+
+    private MarkupString containsDuplicate = new MarkupString(@"
+        bool ContainsDuplicate(int[] nums) {
+            HashSet<int> set = new HashSet<int>();
+
+            for (int i = 0; i < nums.Length; i++) {
+                if (set.Contains(nums[i])) {
+                    return true;
+                }
+                set.Add(nums[i]);
+            }
+
+            return false;
+        }
+    ");
+
+    private MarkupString productExceptSelf = new MarkupString(@"
+        int[] ProductExceptSelf(int[] nums) {
+            int n = nums.Length;
+            int[] leftProduct = new int[n];
+            int[] rightProduct = new int[n];
+
+            leftProduct[0] = 1;
+            rightProduct[n - 1] = 1;
+
+            for (int i = 1; i < n; i++) {
+                leftProduct[i] = leftProduct[i - 1] * nums[i - 1];
+            }
+
+            for (int i = n - 2; i >= 0; i--) {
+                rightProduct[i] = rightProduct[i + 1] * nums[i + 1];
+            }
+
+            int[] result = new int[n];
+
+            for (int i = 0; i < n; i++) {
+                result[i] = leftProduct[i] * rightProduct[i];
+            }
+
+            return result;
+        }  
+    ");
+
+    protected override async Task OnAfterRenderAsync(bool firstRender) { await _js.InvokeAsync<string>("highlightCode"); }
+}
