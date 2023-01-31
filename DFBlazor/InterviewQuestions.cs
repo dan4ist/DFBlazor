@@ -24,6 +24,42 @@
             return maxProfit;
         }
 
+        public int KadaneMaxSum(int[] arr) {
+            int maxSum = 0;
+            int currentSum = 0;
 
+            for (int i = 0; i < arr.Length; i++) {
+                currentSum = currentSum + arr[i];
+                
+                if (currentSum < 0) {
+                    currentSum = 0;
+				}
+
+                if (maxSum < currentSum) { 
+                    maxSum = currentSum;
+                }
+            }
+
+            return maxSum;
+        }
+
+        public int MaxProduct(int[] arr) {
+            int maxHere = arr[0];
+            int minHere = arr[0];
+            int maxSoFar = arr[0];
+
+            for (int i = 1; i < arr.Length; i++) {
+                int temp = Math.Max(Math.Max(arr[i], arr[i] * maxHere), arr[i] * minHere);
+                minHere = Math.Min(Math.Min(arr[i], arr[i] * maxHere), arr[i] * minHere);
+                maxHere = temp;
+                maxSoFar = Math.Max(maxSoFar, maxHere);
+            }
+
+            return maxSoFar;
+        }
+
+        public int MinRotatedSortedArray(int[] arr) { 
+            
+        }
     }
 }

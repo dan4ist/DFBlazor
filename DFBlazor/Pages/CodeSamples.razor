@@ -76,6 +76,41 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header">
+                Maximum Subarray
+            </div>
+            <div class="card-body">
+                <div class="card-title">
+                    Explanation: find the highest value of a continguous subarray, given an array of integers
+                </div>
+                <div class="card-text">
+                    <p>Answer: O(n)</p>
+                    <CodeSnippet>@kadaneMaxSum</CodeSnippet>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header">
+                Maximum Product Subarray
+            </div>
+            <div class="card-body">
+                <div class="card-title">
+                    Title
+                </div>
+                <div class="card-text">
+                    <p>Answer: O(n)</p>
+                    <CodeSnippet>@maxProduct</CodeSnippet>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @*<div class="row">
     <div class="col-sm-6">
         <div class="card text-white bg-dark mb-3">
@@ -185,6 +220,45 @@
             return result;
         }  
     ");
+
+private MarkupString kadaneMaxSum = new MarkupString(@"
+        public int KadaneMaxSum(int[] arr) {
+            int maxSum = 0;
+            int currentSum = 0;
+            int n = arr.Length;
+
+            for (int i = 0; i < n; i++) {
+                currentSum = currentSum + arr[i];
+                
+                if (currentSum < 0) {
+                    currentSum = 0;
+				}
+
+                if (maxSum < currentSum) { 
+                    maxSum = currentSum;
+                }
+            }
+
+            return maxSum;
+        }
+");
+
+private MarkupString maxProduct = new MarkupString(@"
+        public int MaxProduct(int[] arr) {
+            int maxHere = arr[0];
+            int minHere = arr[0];
+            int maxSoFar = arr[0];
+
+            for (int i = 1; i < arr.Length; i++) {
+                int temp = Math.Max(Math.Max(arr[i], arr[i] * maxHere), arr[i] * minHere);
+                minHere = Math.Min(Math.Min(arr[i], arr[i] * maxHere), arr[i] * minHere);
+                maxHere = temp;
+                maxSoFar = Math.Max(maxSoFar, maxHere);
+            }
+
+            return maxSoFar;
+        }
+");
 
     protected override async Task OnAfterRenderAsync(bool firstRender) { await _js.InvokeAsync<string>("highlightCode"); }
 }
