@@ -1,0 +1,78 @@
+﻿@page "/ImageConverter"
+@using System
+@using System.IO
+@using Microsoft.AspNetCore.Hosting
+@using Microsoft.Extensions.Logging
+@using Data
+@inject ILogger<ImageConverter> Logger
+@inject IWebHostEnvironment Environment
+
+<h3>Image Converter</h3>
+<p>
+    Input files below, choose what your file type is originally and what you'd like the output to be, will either come as a .zip if I'm not lazy, or individual images if I'm lazy. 
+    <br />
+    &nbsp;&nbsp;&nbsp;&nbsp;Max Files: @maxFiles 
+    <br />
+    &nbsp;&nbsp;&nbsp;&nbsp;Max Size: @maxSize
+    <br />
+    <br />
+    <small>I am lazy usually</small>
+</p>
+
+<InputFile OnChange="@LoadFiles" multiple />
+
+@if (isLoading) {
+    <p>Hold on...</p>
+} else {
+    <ul>
+        @foreach(var file in loadedFiles) {
+            <li>
+                @file.Name
+                <span>
+                    <button type="button" onclick="DownloadFile">Download File</button>
+                </span>
+            </li>
+        }
+    </ul>
+}
+<div class="row">
+    <div class="col">
+        <button type="button" onclick="DownloadAllFiles" class="btn btn-primary">Download All Files</button>
+        <button type="button" onclick="RemoveAllFiles" class="btn btn-outline-danger">Delete All Files</button>
+    </div>
+</div>
+
+@code {
+    private bool isLoading;
+    private long maxSize = 1024 * 15;
+    private int maxFiles = 100;
+    private List<IBrowserFile> loadedFiles = new();
+    private MainLibrary lib = new();
+    private string origExt = ".heic";
+    private string outputExt = ".jpg";
+
+    private async Task LoadFiles(InputFileChangeEventArgs e) {
+        isLoading = true;
+        loadedFiles.Clear();
+
+        foreach ( var file in e.GetMultipleFiles(maxFiles) ) {
+            try {
+                loadedFiles.Add(file);
+
+                var trustedFileNameForFileStorage = Path.GetRandomFileName();
+                var path = Path.Combine(Environment.ContentRootPath,
+                        Environment.EnvironmentName, "unsafe_uploads",
+                        trustedFileNameForFileStorage);
+
+                await using FileStream fs = new(path, FileMode.Create);
+                await file.OpenReadStream(maxSize).CopyToAsync(fs);
+                string tempFile = lib.ConvertFile(path, origExt, path, outputExt);
+            } catch ( Exception ex ) {
+                Logger.LogError("File: {Filename} Error: {Error}",
+                    file.Name, ex.Message);
+            }
+        }
+
+        isLoading = false;
+    }
+}
