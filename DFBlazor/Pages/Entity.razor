@@ -1,0 +1,17 @@
+﻿@using DFBlazor.Data;
+
+<h3>Stuff</h3>
+<div class="row">
+    <div class="col">
+        <ul>
+            @if (E.Attributes != null && E.Attributes.Count > 0) {
+                <li></li>
+            }
+        </ul>
+    </div>
+</div>
+
+    @code {
+    [Parameter]
+    public EntityModel E { get; set; }
+}

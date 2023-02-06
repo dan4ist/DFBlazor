@@ -1,0 +1,27 @@
+﻿@using DFBlazor.Data;
+
+<input type="text" class="form-text" value="@A.Name" />
+@foreach (ValueModel v in A.Values ) {
+    <p>@v.Data
+    @foreach (EntityModel e in v.Entities ) {
+            <small class="text-muted">&emsp;@e.Name</small>
+    }
+    @foreach (AttributeModel a in v.Attributes ) {
+        <small class="text-muted fw-lighter">&emsp;@a.Name</small>
+    }
+    </p>
+}
+<input type="text" @bind="NewValue" placeholder="Enter new value here" />
+<button @onclick="SaveAttribute">Add Value</button>
+
+@code {
+    [Parameter]
+    public AttributeModel A { get; set; }
+    private EAVLibrary lib = new EAVLibrary();
+    public string NewValue { get; set; }
+
+    public Task<bool> SaveAttribute() {
+        return await lib.SaveAttribute(A);
+        
+    }
+}

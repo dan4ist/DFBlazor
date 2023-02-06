@@ -1,23 +1,29 @@
 ﻿namespace DFBlazor.Data {
 
-    public class Entity {
+    public class EntityModel {
         public int ID { get; set; }
         public string Name { get; set; }
-        public IList<Attribute> Attributes { get; set; }
+        public IList<AttributeModel> Attributes { get; set; }
+        public IList<EntityModel> ChildEntities { get; set; }
     }
 
-    public class Attribute {
+    public class AttributeModel {
         public int ID { get; set; }
         public int EntityID { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
+        public IList<ValueModel> Values { get; set; }
+        public IList<EntityModel> Entities { get; set;}
     }
 
-    public class Value {
+    public class ValueModel {
         public int ID { get; set; }
         public int AttributeID { get; set; }
         public int EntityID { get; set; }
         public string Data { get; set; }
+        public IList<EntityModel> Entities { get;}
+        public IList<AttributeModel> Attributes { get; }
+
     }
 
     public class JobModel {

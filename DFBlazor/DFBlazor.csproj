@@ -11,6 +11,7 @@
     <PackageReference Include="Fluxor.Blazor.Web" Version="5.7.0" />
     <PackageReference Include="Fluxor.Blazor.Web.ReduxDevTools" Version="5.7.0" />
     <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="12.2.2" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
   </ItemGroup>
 
 </Project>

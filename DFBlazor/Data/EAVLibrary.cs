@@ -1,22 +1,56 @@
 ﻿namespace DFBlazor.Data {
     public class EAVLibrary {
 
-        public bool SaveEntity(Entity e) {
+        public bool SaveEntity(EntityModel e) {
             return true;
         }
 
-        public Entity GetEntityByID(int id) {
-            return new Entity();
+        public EntityModel GetEntityByID(int id) {
+            return new EntityModel();
         }
 
-        public IList<Entity> GetEntities() { 
-        return new List<Entity>();
+        public IList<EntityModel> GetEntities() { 
+        return new List<EntityModel>();
         }
 
-        public bool UpdateEntity(Entity e) {
+        public bool UpdateEntity(EntityModel e) {
             return true;
         }
 
 
+
+        public bool SaveAttribute(AttributeModel e) {
+            return true;
+        }
+
+        public AttributeModel GetAttributeByID(int id) {
+            return new AttributeModel();
+        }
+
+        public IList<AttributeModel> GetAttributes() {
+            return new List<AttributeModel>();
+        }
+
+        public bool UpdateAttribute(AttributeModel e) {
+            return true;
+        }
+
+
+
+        public bool SaveValue(ValueModel e) {
+            return true;
+        }
+
+        public ValueModel GetValueByID(int id) {
+            return new ValueModel();
+        }
+
+        public IList<ValueModel> GetValues() {
+            return new List<ValueModel>();
+        }
+
+        public bool UpdateValue(ValueModel e) {
+            return true;
+        }
     }
 }
