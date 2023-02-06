@@ -1,0 +1,37 @@
+﻿@using DFBlazor.Data;
+
+<div class="card text-white bg-dark mb-3">
+    <div class="card-header text-lg-center">
+        <span class="fw-light">@job.JobName</span>, <cite class="fw-lighter">@job.CompanyName</cite>
+        <br />
+        <small class="text-muted">
+            @job.Start.ToString("MM/yyyy");
+             - 
+            @if (@job.End != null) {
+                @job.EndString;
+            }
+        </small>
+    </div>
+    <div class="card-body">
+        <p>@job.JobDescription</p>
+        <p class="text-center fw-bold">PROJECTS</p>
+        <ul>
+            @foreach(Project p in job.Projects) {
+                <li>
+                    <strong>@p.Name:</strong>
+                    @p.Description
+                    <br />
+                    &emsp;<small class="text-muted">@p.Technologies</small>
+                    <br />
+                    <br />
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public JobModel job { get; set; }
+
+}

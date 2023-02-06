@@ -1,52 +1,232 @@
 ﻿@page "/Resume"
+@using DFBlazor.Data;
 
 <h3>Resume</h3>
 
-<div class="row">
-    <div class="col">
-        <div class="card text-white bg-dark mb-3">
-            <div class="card-header text-lg-center">
-                Summary
-            </div>
-            <div class="card-body">
-                Full stack .NET senior software engineer and solutions architect with a strong background in designing and developing reliable and maintainable software solutions. 
-                Skilled in various technologies such as C#, Javascript, SQL, .NET, Blazor, and Azure with a demonstrated ability to lead development teams and deliver complex projects on time and within budget.
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="card text-white bg-dark mb-3">
+                <div class="card-header text-lg-center">
+                    Summary
+                </div>
+                <div class="card-body">
+                    Full stack .NET senior software engineer and solutions architect with a strong background in designing and developing reliable and maintainable software solutions.
+                    Skilled in various technologies such as C#, Javascript, SQL, .NET, Blazor, and Azure with a demonstrated ability to lead development and deliver results.
+                </div>
             </div>
         </div>
     </div>
-</div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card text-white bg-dark mb-3">
+                <div class="card-header">
+                    Technical Skills
+                </div>
+                <div class="card-body">
+                    <div class="card-text">
+                        <div class="row">
+                            <div class="col">
+                                <ul>
+                                    <li>C#</li>
+                                    <li>SQL</li>
+                                    <li>Javascript</li>
+                                    <li>HTML</li>
+                                    <li>CSS</li>
+                                </ul>
 
-<div class="row">
-    <div class="col-sm-6">
-        <div class="card text-white bg-dark mb-3">
-            <div class="card-header">
-                Technical Skills
-            </div>
-            <div class="card-body">
-                <div class="card-text">
-                    <ul>
-                        <li>C#</li>
-                        <li>SQL</li>
-                        <li>Javascript</li>
-                        <li>HTML</li>
-                        <li>CSS</li>
-                        <li>ASP.NET</li>
-                        <li>Blazor</li>
-                        <li>Azure</li>
-                        <li>jQuery</li>
-                        <li>Dapper</li>
-                        <li>SharePoint CSOM</li>
-                        <li>RESTful APIs</li>
-                        <li>MVC</li>
-                        <li>Sendgrid</li>
-                        <li>And many more...</li>
-                    </ul>
+                            </div>
+                            <div class="col">
+                                <ul>
+                                    <li>jQuery</li>
+                                    <li>ASP.NET</li>
+                                    <li>Blazor</li>
+                                    <li>Azure</li>
+                                </ul>
+                            </div>
+                            <div class="col">
+                                <ul>
+                                    <li>Dapper</li>
+                                    <li>SharePoint CSOM</li>
+                                    <li>RESTful APIs</li>
+                                    <li>MVC</li>
+                                    <li>Sendgrid</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card text-white bg-dark mb-3">
+                <div class="card-header">
+                    Education
+                </div>
+                <div class="card-body">
+                    <div class="card-text">
+                        B.S. Computer Science
+                        <br />
+                        &emsp;
+                        <cite class="text-muted">University of Miami, Coral Gables, Florida (2009)</cite>
+                        <br />
+                        <br />
+                        M.P.S. Technology Management
+                        <br />
+                        &emsp;
+                        <cite class="text-muted">Georgetown University, Washington, D.C. (2015)</cite>
+                        <br />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card text-white bg-dark mb-3">
+                <div class="card-header">
+                    Technologies &amp; Recognitions
+                </div>
+                <div class="card-body">
+                    <div class="card-text">
+                        <div class="row">
+                            <div class="col">
+                                <ul>
+                                    <li>Visual Studio/VSCode</li>
+                                    <li>SQL Server Management Studio</li>
+                                    <li>Azure Data Studio</li>
+                                    <li>JIRA</li>
+                                </ul>
+                            </div>
+                            <div class="col">
+                                <ul>
+                                    <li>HQDA, CIO/G-6 3 Star Commander's Coin</li>
+                                    <li>NETCOM/9<sup>th</sup> S.C. (A) 2-Star Commander's Coin</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <Job job="@air"></Job>
+        </div>
+        <div class="col">
+            <Job job="@dl"></Job>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <Job job="@army"></Job>
+        </div>
+        <div class="col">
         </div>
     </div>
 </div>
 
 @code {
+    public JobModel air = new JobModel();
+    public Project dgps = new Project();
+    public Project itravel = new Project();
+    public Project vendor = new Project();
+    public Project adp = new Project();
 
+    public JobModel dl = new JobModel();
+    public Project hcpm = new Project();
+    public Project qsv = new Project();
+    public Project reviews = new Project();
+
+    public JobModel army = new JobModel();
+    public Project sysa = new Project();
+    public Project contracts = new Project();
+    public Project mobile = new Project();
+    public Project carson = new Project();
+
+    protected override void OnInitialized() {
+
+        #region AIR
+        air.JobName = "Senior Software Engineer";
+        air.CompanyName = "American Institutes for Research";
+        air.JobDescription = "Lead developer and architect of over 25 separate applications, services, and systems integrations within the organization to include: " +
+        "data governance, accounts payable, payroll, performance management, international travel, office relocation planning and HR process automation. Migrated and upgraded over 10 separate applications from On-Premise to Azure cloud-hosted solutions.";
+        air.Start = new DateTime(2017, 5, 15);
+        air.End = null;
+        air.Projects = new List<Project>();
+
+        dgps.Name = "Data Governance Planning System";
+        dgps.Description = "Internal company application hosting data governance details and our online information security review process for over 2,000 projects.";
+        dgps.Technologies = ".NET, jQuery, SQL, Bootstrap";
+        air.Projects.Add(dgps);
+
+        itravel.Name = "International Travel (iTravel)";
+        itravel.Description = "Internal company application to manage international travel management and approval processes";
+        itravel.Technologies = "Blazor, .NET, SQL, Bootstrap, Dapper, Radzen Blazor";
+        air.Projects.Add(itravel);
+
+        vendor.Name = "AIR Vendor Portal";
+        vendor.Description = "Public-facing web application to manage retrieval and secure transmission of AIR vendor's W-9 and Direct Deposit forms.";
+        vendor.Technologies = ".NET, SQL, Bootstrap, jQuery";
+        air.Projects.Add(vendor);
+
+        adp.Name = "ADP Payroll Application";
+        adp.Description = "Internal application for payroll employees to generate file to send to ADP for payroll processing.";
+        adp.Technologies = ".NET, Oracle SQL, Bootstrap, jQuery";
+        #endregion
+
+        #region DL
+        dl.JobName = "Senior Software Engineer";
+        dl.CompanyName = "Definitive Logic";
+        dl.JobDescription = "Lead development on multiiple client projects covering the Department of Veterans Affairs (VA).  Began work as a SharePoint consultant and junior programmer and ended as the lead developer on a multi-year prime contract project. " +
+        "Interviewed countless potential employees throughout my time and mentored an intern that later went on to become a full employee and senior programmer";
+        dl.Start = new DateTime(2012, 6, 1);
+        dl.End = new DateTime(2017, 4, 1);
+        dl.Projects = new List<Project>();
+
+        hcpm.Name = "VA Health Systems Planning Application (HSPA)";
+        hcpm.Description = "Veterans Affairs internal web application to manage veterans healthcare access, budgeting, and logistics.";
+        hcpm.Technologies = "nHibernate, Spring.NET, Aspose, Highcharts.js, Stellar.js, C#, SQL, jQuery";
+        dl.Projects.Add(hcpm);
+
+        qsv.Name = "Quality, Safety, & Value Knowledgebase";
+        qsv.Description = "Created custom code able to run on SharePoint 2007/10 to display information and dynamically update data.";
+        qsv.Technologies = "SharePoint, SPServices, jQuery, CAML, XSLT, Bootstrap, C#, .NET";
+        dl.Projects.Add(qsv);
+
+        reviews.Name = "Employee Goals, Reviews, & Compensation";
+        reviews.Description = "Lead development of internal employee review system";
+        reviews.Technologies = ".NET, SQL, Bootstrap, jQuery";
+        #endregion
+
+        #region ARMY
+        army.JobName = "IT Specialist";
+        army.CompanyName = "Headquarters, US Dept. of Army, Chief Information Office (CIO)/G-6";
+        army.Location = "Arlington, VA";
+        army.Start = new DateTime(2009, 8, 3);
+        army.End = new DateTime(2012, 6, 1);
+        army.JobDescription = "Member of the Army Knowledge Leadership (AKL) program allowing for rotational duties over 2 years of a federal internship designed to create diverse Army civilian leaders.  Rotational work, included below, ranged from enterprise contract management, cost benefit analysis, mobile device security, wardriving, and SLA creation";
+        army.Projects = new List<Project>();
+
+
+        sysa.Name = "Enterprise Collaboration Services";
+        sysa.Description = "Charter member of the ECS initiative to bring together 800+ disparate SharePoint instances within the Army into a single managed service.  Provided administration of multiple SharePoint site collections and collaborated on the creation of the SLA with DISA and Microsoft.";
+        sysa.Technologies = "SharePoint, SPDeveloper";
+        army.Projects.Add(sysa);
+
+        contracts.Name = "Contracts Management & Enterprise Services Division";
+        contracts.Description = "Created and collaborated on Army Cost Benefit Analysis (CBA) formation for proposed and existing enterprise services and license agreements for Microsoft, Citrix, and Cisco";
+        contracts.Technologies = "Excel, Word";
+        army.Projects.Add(contracts);
+
+        carson.Name = "Ft. Carson Network Enterprise Center (NEC) Information Assurance";
+        carson.Description = "To be honest, this job was pretty rad.  It involved a half-baked attempt to create a honeypot within the Army network, wardriving for illegal hotspots on base, and doing forensics on people's machines to determine if they accessed innappropriate material while on a Gov't owned device/network";
+        carson.Technologies = "Wardriving, Encase, Wireshark, Windows Explorer";
+        army.Projects.Add(mobile);
+
+        mobile.Name = "Mobile Electronic Device (MED) Working Group";
+        mobile.Description = "Researched, created, and briefed senior military officials (SES, Commanding Generals) on the proliferation and advancement of mobile device technology and their potential security risks";
+        mobile.Technologies = "PowerPoint, Word";
+        army.Projects.Add(carson);
+        #endregion
+    }
 }

@@ -75,8 +75,12 @@ a:hover {
 }
 
 .nav-link {
-    text-shadow: 1px 1px 2px darkgreen;
-    color:#fff;
+    /*text-shadow: 1px 1px 2px darkgreen;*/
+    color: #fff;
+}
+
+.nav-item > a {
+    color: #fff;
 }
 
 main {
@@ -97,3 +101,20 @@ main {
     color: #fff;
 }
 
+.tinted-image {
+    background-image:
+    /* top, transparent red */
+    linear-gradient( rgba(255, 0, 0, 0.45), rgba(255, 0, 0, 0.45) ),
+    /* your image */
+    url(image.jpg);
+}
+
+#bgcont::after {
+    content: "";
+    // ::before and ::after both require content position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
