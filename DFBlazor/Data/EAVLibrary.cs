@@ -1,7 +1,7 @@
 ﻿namespace DFBlazor.Data {
     public class EAVLibrary {
 
-        public bool SaveEntity(EntityModel e) {
+        public async Task<bool> SaveEntity(EntityModel e) {
             return true;
         }
 
@@ -19,7 +19,7 @@
 
 
 
-        public bool SaveAttribute(AttributeModel e) {
+        public async Task<bool> SaveAttribute(AttributeModel e) {
             return true;
         }
 
@@ -37,7 +37,7 @@
 
 
 
-        public bool SaveValue(ValueModel e) {
+        public async Task<bool> SaveValue(ValueModel e) {
             return true;
         }
 

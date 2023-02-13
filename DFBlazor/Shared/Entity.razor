@@ -1,0 +1,30 @@
+﻿@using DFBlazor.Data;
+
+<input type="text" class="form-text" value="@entity.Name" />
+<button type="button" class="btn btn-primary">Add Entity</button>
+<div class="row">
+    <div class="col">
+        <ul>
+            @if (entity.Attributes != null && entity.Attributes.Count > 0) {
+                @foreach (AttributeModel a in entity.Attributes) {
+                    <Attribute attr="a"></Attribute>
+                }
+            }
+        </ul>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public EntityModel entity { get; set; }
+
+    protected override void OnInitialized() {
+        base.OnInitialized();
+
+
+    }
+
+    private void AddEntity() {
+        
+    }
+}

@@ -21,8 +21,8 @@
         public int AttributeID { get; set; }
         public int EntityID { get; set; }
         public string Data { get; set; }
-        public IList<EntityModel> Entities { get;}
-        public IList<AttributeModel> Attributes { get; }
+        public IList<EntityModel> Entities { get; set; }
+        public IList<AttributeModel> Attributes { get; set; }
 
     }
 

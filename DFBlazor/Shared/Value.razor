@@ -1,0 +1,27 @@
+﻿@using DFBlazor.Data;
+
+<input type="text" class="form-text" value="@V.Data" />
+<button @onclick="SaveValue">Edit Value</button>
+<br />
+
+@code {
+    [Parameter]
+    public ValueModel V { get; set; }
+    private EAVLibrary lib = new EAVLibrary();
+
+    protected override void OnInitialized() {
+        base.OnInitialized();
+
+        if (V.Attributes == null) {
+            V.Attributes = new List<AttributeModel>();
+        }
+
+        if (V.Entities == null) {
+            V.Entities = new List<EntityModel>();
+        }
+    }
+
+    public async Task<bool> SaveValue() {
+        return await lib.SaveValue(V);
+    }
+}
