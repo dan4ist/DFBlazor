@@ -12,7 +12,7 @@
         public int EntityID { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
-        public IList<ValueModel> Values { get; set; }
+        public ValueModel Value { get; set; }
         public IList<EntityModel> Entities { get; set;}
     }
 
@@ -21,8 +21,8 @@
         public int AttributeID { get; set; }
         public int EntityID { get; set; }
         public string Data { get; set; }
-        public IList<EntityModel> Entities { get; set; }
-        public IList<AttributeModel> Attributes { get; set; }
+        public EntityModel Entity { get; set; }
+        public AttributeModel Attribute { get; set; }
 
     }
 

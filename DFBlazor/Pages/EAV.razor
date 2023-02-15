@@ -1,29 +1,33 @@
 ﻿@page "/eav"
 @using DFBlazor.Data;
 
-<h3>EAV</h3>
+<h3>E-A-V</h3>
 
-<p class="h5">Entity</p>
-<Entity E="@E"></Entity>
+<p>Implementation of an Entity, Attribute, Value database.  No saving currently, just the mechanics of a simple EAV.  EAV DBs are pretty cool as they're infinitely extendable but once the data set is large enough it really falls short.</p>
 
-<p class="h5">Attribute</p>
-<Attribute A="@A"></Attribute>
-
-<p class="h5">Value</p>
-<Value V="@V"></Value>
+<div class="row">
+    @foreach(EntityModel e in Entities) {
+        <div class="col-2">
+            <Entity entity="@e"></Entity>
+        </div>
+    }
+</div>
+<button type="button" @onclick="CreateNewEntity" class="btn btn-success">Create New Entity</button>
 
 @code {
     public IList<EntityModel> Entities;
     public EntityModel E;
-    public AttributeModel A;
-    public ValueModel V;
 
     protected override void OnInitialized() {
         base.OnInitialized();
 
         Entities = new List<EntityModel>();
         E = new EntityModel();
-        A = new AttributeModel();
-        V = new ValueModel();
+        Entities.Add(E);
+    }
+
+    private void CreateNewEntity() {
+        E = new EntityModel();
+        Entities.Add(E);
     }
 }
