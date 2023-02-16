@@ -7,57 +7,73 @@
 @inject ILogger<ImageConverter> Logger
 @inject IWebHostEnvironment Environment
 
-<h3>Image Converter</h3>
+<h1>Upload Files</h1>
+<p>Still a bit of a work in progress...</p>
 <p>
-    Input files below, choose what your file type is originally and what you'd like the output to be, will either come as a .zip if I'm not lazy, or individual images if I'm lazy. 
-    <br />
-    &nbsp;&nbsp;&nbsp;&nbsp;Max Files: @maxFiles 
-    <br />
-    &nbsp;&nbsp;&nbsp;&nbsp;Max Size: @maxSize
-    <br />
-    <br />
-    <small>I am lazy usually</small>
+    <label>
+        Max file size:
+        <input type="number" @bind="maxFileSize" />
+    </label>
 </p>
 
-<InputFile OnChange="@LoadFiles" multiple />
+<p>
+    <label>
+        Max allowed files:
+        <input type="number" @bind="maxAllowedFiles" />
+    </label>
+</p>
 
-@if (isLoading) {
-    <p>Hold on...</p>
-} else {
+<p>
+    <label>
+        Upload up to @maxAllowedFiles of up to @maxFileSize bytes:
+        <InputFile OnChange="@LoadFiles" multiple />
+    </label>
+</p>
+
+@if (isLoading)
+{
+    <p>Uploading...</p>
+}
+else
+{
     <ul>
-        @foreach(var file in loadedFiles) {
+        @foreach (var file in loadedFiles)
+        {
+            <img src="@file.Item2" width="250" height="250" />
             <li>
-                @file.Name
-                <span>
-                    <button type="button" onclick="DownloadFile">Download File</button>
-                </span>
+                <ul>
+                    <li>Name: @file.Item1.Name</li>
+                    <li>Last modified: @file.Item1.LastModified.ToString()</li>
+                    <li>Size (bytes): @file.Item1.Size</li>
+                    <li>Content type: @file.Item1.ContentType</li>
+                    <li>
+                        <a href="@file.Item2" class="btn btn-primary">Download File</a>
+                    </li>
+                </ul>
             </li>
         }
     </ul>
 }
-<div class="row">
-    <div class="col">
-        <button type="button" onclick="DownloadAllFiles" class="btn btn-primary">Download All Files</button>
-        <button type="button" onclick="RemoveAllFiles" class="btn btn-outline-danger">Delete All Files</button>
-    </div>
-</div>
-
+<button type="button"accesskey="$0" class="btn btn-danger" @onclick="DeleteAllFiles" title="I don't want your stuff, trust me">Delete All Files</button>
 @code {
+    private List<Tuple<IBrowserFile, string>> loadedFiles = new();
+    private long maxFileSize = 1024 * 2000;
+    private int maxAllowedFiles = 3;
     private bool isLoading;
-    private long maxSize = 1024 * 15;
-    private int maxFiles = 100;
-    private List<IBrowserFile> loadedFiles = new();
-    private MainLibrary lib = new();
-    private string origExt = ".heic";
-    private string outputExt = ".jpg";
+    private MainLibrary lib;
+
+    protected override void OnInitialized() {
+        base.OnInitialized();
+        lib = new MainLibrary();
+    }
 
     private async Task LoadFiles(InputFileChangeEventArgs e) {
         isLoading = true;
         loadedFiles.Clear();
 
-        foreach ( var file in e.GetMultipleFiles(maxFiles) ) {
+        foreach (var file in e.GetMultipleFiles(maxAllowedFiles)) {
             try {
-                loadedFiles.Add(file);
+                //loadedFiles.Add(file);
 
                 var trustedFileNameForFileStorage = Path.GetRandomFileName();
                 var path = Path.Combine(Environment.ContentRootPath,
@@ -65,14 +81,26 @@
                         trustedFileNameForFileStorage);
 
                 await using FileStream fs = new(path, FileMode.Create);
-                await file.OpenReadStream(maxSize).CopyToAsync(fs);
-                string tempFile = lib.ConvertFile(path, origExt, path, outputExt);
-            } catch ( Exception ex ) {
+                await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
+                string temppath = lib.ConvertFile(path);
+                Tuple<IBrowserFile, string> temp = new Tuple<IBrowserFile, string>(file, temppath);
+                loadedFiles.Add(temp);
+            } catch (Exception ex) {
                 Logger.LogError("File: {Filename} Error: {Error}",
                     file.Name, ex.Message);
             }
         }
 
         isLoading = false;
+    }    
+
+    private void DeleteAllFiles() {
+        var path = Path.Combine(Environment.ContentRootPath,
+                         Environment.EnvironmentName, "unsafe_uploads");
+        DirectoryInfo di = new DirectoryInfo(path);
+        foreach(FileInfo f in di.GetFiles()) {
+            f.Delete();
+        }
+        loadedFiles = new List<Tuple<IBrowserFile, string>>();
     }
 }

@@ -22,17 +22,16 @@ namespace DFBlazor.Data {
 
             return outputFiles;
         }
-        public string ConvertFile(string path, string origExt, string outPath, string outExt) {
+        public string ConvertFile(string path) {
             string outputFile;
 
-            FileInfo info = new FileInfo(path + origExt);
+            FileInfo info = new FileInfo(path);
             using ( MagickImage i = new MagickImage(info.FullName) ) {
                 //save as jpg
-                i.Write(outPath + info.Name + outExt);
-                outputFile = info.FullName;
+                outputFile = path.Substring(0, path.IndexOf('.')) + ".jpg";
+                i.Write(outputFile);
             }
             
-
             return outputFile;
         }
         #endregion
