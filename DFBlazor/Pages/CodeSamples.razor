@@ -16,7 +16,7 @@
             </div>
             <div class="card-body">
                 <div class="card-text">
-                    <p>Explanation: find two numbers in an array such that their sum is equal to a target value.</p>
+                    <p>Explanation: Find two numbers in an array such that their sum is equal to a target value.</p>
                     <p>Answer: O(n)</p>
                     @if (twoSum.Value != null) {
                         <CodeSnippet>@twoSum</CodeSnippet>
@@ -32,7 +32,7 @@
             </div>
             <div class="card-body">
                 <div class="card-text">
-                    <p>Explanation: find the maximum profit that can be made by buying and selling a single stock given an array of stock prices.</p>
+                    <p>Explanation: Find the maximum profit that can be made by buying and selling a single stock given an array of stock prices.</p>
                     <p>Answer: O(n)</p>
                     @if (maxProfit.Value != null) {
                         <CodeSnippet>@maxProfit</CodeSnippet>
@@ -64,7 +64,7 @@
             </div>
             <div class="card-body">
                 <div class="card-title">
-                    Explanation: find the product of all elements in an array except the element at the current index
+                    Explanation: Find the product of all elements in an array except the element at the current index
                 </div>
                 <div class="card-text">
                     <p>Answer: O(n)</p>
@@ -80,7 +80,7 @@
             </div>
             <div class="card-body">
                 <div class="card-title">
-                    Explanation: find the highest value of a continguous subarray, given an array of integers
+                    Explanation: Find the highest value of a continguous subarray, given an array of integers
                 </div>
                 <div class="card-text">
                     <p>Answer: O(n)</p>
@@ -96,7 +96,7 @@
             </div>
             <div class="card-body">
                 <div class="card-title">
-                    Title
+                    Explanation: Find the maximum product subarray given an array of numbers
                 </div>
                 <div class="card-text">
                     <p>Answer: O(n)</p>
@@ -115,7 +115,7 @@
                     Explanation: Use KMP to create an array of prefix/suffix and run through the text until a match is found, utilizing the LPS array to revert the crawler for partial matches.
                 </div>
                 <div class="card-text">
-                    <p>Answer: O(n)</p>
+                    <p>Answer: O(n+m)</p>
                     <CodeSnippet>@FirstSubStringInString</CodeSnippet>
                 </div>
             </div>
@@ -127,50 +127,50 @@
     [Inject] private IJSRuntime _js { get; set; }
 
     private MarkupString twoSum = new MarkupString(@"
-        int[] TwoSum(int[] arr, int target) {
-            Dictionary<int,int> indices = new Dictionary<int,int>();
+int[] TwoSum(int[] arr, int target) {
+    Dictionary<int,int> indices = new Dictionary<int,int>();
 
-            for (int i = 0; i < arr.Length; i++) {
-                int num = arr[i];
+    for (int i = 0; i < arr.Length; i++) {
+        int num = arr[i];
 
-                if (indices.ContainsKey(target - num)) {            //subtract our target from the number at our index and see if we get a collision
-                    return new int[] { indices[target - num], i };  //collision
-                }
-                indices[num] = i;                                   //add to the dictionary
-            }
-
-            return new int[0];
+        if (indices.ContainsKey(target - num)) {            //subtract our target from the number at our index and see if we get a collision
+            return new int[] { indices[target - num], i };  //collision
         }
+        indices[num] = i;                                   //add to the dictionary
+    }
+
+    return new int[0];
+}
         ");
 
     private MarkupString maxProfit = new MarkupString(@"
-        int MaxProfit(int[] prices) {
-            int minPrice = int.MaxValue;
-            int maxProfit = 0;
+int MaxProfit(int[] prices) {
+    int minPrice = int.MaxValue;
+    int maxProfit = 0;
 
-            for (int i = 0; i < prices.Length; i++) {
-               int price = prices[i];
-               minPrice = Math.Min(minPrice, price);
-               maxProfit = Math.Max(maxProfit, price - minPrice);
-            }
+    for (int i = 0; i < prices.Length; i++) {               //assumes a sorted array, just keep track of min and calculate max based off that
+        int price = prices[i];
+        minPrice = Math.Min(minPrice, price);
+        maxProfit = Math.Max(maxProfit, price - minPrice);  //is our current delta bigger than anything we've seen?
+    }
 
-            return maxProfit;
-        }
+    return maxProfit;
+}
     ");
 
     private MarkupString containsDuplicate = new MarkupString(@"
-        bool ContainsDuplicate(int[] nums) {
-            HashSet<int> set = new HashSet<int>();
+bool ContainsDuplicate(int[] nums) {
+    HashSet<int> set = new HashSet<int>();
 
-            for (int i = 0; i < nums.Length; i++) {
-                if (set.Contains(nums[i])) {
-                    return true;
-                }
-                set.Add(nums[i]);
-            }
-
-            return false;
+    for (int i = 0; i < nums.Length; i++) {     //simple hash implementation
+        if (set.Contains(nums[i])) {
+            return true;
         }
+        set.Add(nums[i]);
+    }
+
+    return false;
+}
     ");
 
     private MarkupString productExceptSelf = new MarkupString(@"
@@ -240,55 +240,55 @@
 ");
 
     private MarkupString FirstSubStringInString = new MarkupString(@"
-        public int SubStrStr(string haystack, string needle) {
-            int hLen = haystack.Length;
-            int nLen = needle.Length;
+public int SubStrStr(string haystack, string needle) {
+    int hLen = haystack.Length;
+    int nLen = needle.Length;
 
-            int[] lps = new int[nLen];
-            lps[0] = 0;
+    int[] lps = new int[nLen];
+    lps[0] = 0;
 
-            int a = 1;
-            int b = 0;
-            int c = 0;
-            int len = 0;
-            int result = 0;
+    int a = 1;
+    int b = 0;
+    int c = 0;
+    int len = 0;
+    int result = 0;
 
-            //create the prefix/suffix lps array
-            while (a < nLen) {
-                if (needle[a] == needle[len]) {
-                    len++;
-                    lps[a] = len;
-                    a++;
-                } else {
-                    if (len != 0) {
-                        len = lps[len-1];
-                    } else {
-                        lps[a] = len;
-                        a++;
-                    }
-                }
+    //create the prefix/suffix lps array
+    while (a < nLen) {
+        if (needle[a] == needle[len]) {
+            len++;
+            lps[a] = len;
+            a++;
+        } else {
+            if (len != 0) {
+                len = lps[len-1];
+            } else {
+                lps[a] = len;
+                a++;
             }
-
-            while (c < hLen) {
-                if (needle[b] == haystack[c]) {
-                    b++;
-                    c++;
-                }
-
-                if (b == nLen) {
-                    return c-b;
-                } else if (c < hLen && needle[b] != haystack[c]) {
-                    //we had a mismatch after a certain number of characters
-                    if (b != 0) {
-                        b = lps[b-1];
-                    } else {
-                        c++;
-                    }
-                }
-            }
-
-            return -1;
         }
+    }
+
+    while (c < hLen) {
+        if (needle[b] == haystack[c]) {
+            b++;
+            c++;
+        }
+
+        if (b == nLen) {
+            return c-b;
+        } else if (c < hLen && needle[b] != haystack[c]) {
+            //we had a mismatch after a certain number of characters
+            if (b != 0) {
+                b = lps[b-1];
+            } else {
+                c++;
+            }
+        }
+    }
+
+    return -1;
+}
 ");
 
     protected override async Task OnAfterRenderAsync(bool firstRender) { await _js.InvokeAsync<string>("highlightCode"); }
