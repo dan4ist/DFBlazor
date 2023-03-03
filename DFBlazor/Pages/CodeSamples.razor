@@ -1,6 +1,6 @@
 ﻿@page "/CodeSamples"
 
-<PageTitle>Code Samples</PageTitle>
+<PageTitle>DF:Code Samples</PageTitle>
 
 <h1>Code Samples</h1>
 
@@ -41,8 +41,6 @@
             </div>
         </div>
     </div>
-</div>
-<div class="row">
     <div class="col-sm-6">
         <div class="card text-white bg-dark mb-3">
             <div class="card-header">
@@ -75,8 +73,6 @@
             </div>
         </div>
     </div>
-</div>
-<div class="row">
     <div class="col-sm-6">
         <div class="card text-white bg-dark mb-3">
             <div class="card-header">
@@ -109,40 +105,23 @@
             </div>
         </div>
     </div>
+    <div class="col-sm-6">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header">
+                Index of the First Occurance of a String
+            </div>
+            <div class="card-body">
+                <div class="card-title">
+                    Explanation: Use KMP to create an array of prefix/suffix and run through the text until a match is found, utilizing the LPS array to revert the crawler for partial matches.
+                </div>
+                <div class="card-text">
+                    <p>Answer: O(n)</p>
+                    <CodeSnippet>@FirstSubStringInString</CodeSnippet>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-@*<div class="row">
-    <div class="col-sm-6">
-        <div class="card text-white bg-dark mb-3">
-            <div class="card-header">
-                Header
-            </div>
-            <div class="card-body">
-                <div class="card-title">
-                    Title
-                </div>
-                <div class="card-text">
-                    Text
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6">
-        <div class="card text-white bg-dark mb-3">
-            <div class="card-header">
-                Header
-            </div>
-            <div class="card-body">
-                <div class="card-title">
-                    Title
-                </div>
-                <div class="card-text">
-                    Text
-                </div>
-            </div>
-        </div>
-    </div>
-</div>*@
 
 @code {
     [Inject] private IJSRuntime _js { get; set; }
@@ -154,10 +133,10 @@
             for (int i = 0; i < arr.Length; i++) {
                 int num = arr[i];
 
-                if (indices.ContainsKey(target - num)) {
-                    return new int[] { indices[target - num], i };
+                if (indices.ContainsKey(target - num)) {            //subtract our target from the number at our index and see if we get a collision
+                    return new int[] { indices[target - num], i };  //collision
                 }
-                indices[num] = i;
+                indices[num] = i;                                   //add to the dictionary
             }
 
             return new int[0];
@@ -221,7 +200,7 @@
         }  
     ");
 
-private MarkupString kadaneMaxSum = new MarkupString(@"
+    private MarkupString kadaneMaxSum = new MarkupString(@"
         public int KadaneMaxSum(int[] arr) {
             int maxSum = 0;
             int currentSum = 0;
@@ -229,7 +208,7 @@ private MarkupString kadaneMaxSum = new MarkupString(@"
 
             for (int i = 0; i < n; i++) {
                 currentSum = currentSum + arr[i];
-                
+
                 if (currentSum < 0) {
                     currentSum = 0;
 				}
@@ -243,7 +222,7 @@ private MarkupString kadaneMaxSum = new MarkupString(@"
         }
 ");
 
-private MarkupString maxProduct = new MarkupString(@"
+    private MarkupString maxProduct = new MarkupString(@"
         public int MaxProduct(int[] arr) {
             int maxHere = arr[0];
             int minHere = arr[0];
@@ -257,6 +236,58 @@ private MarkupString maxProduct = new MarkupString(@"
             }
 
             return maxSoFar;
+        }
+");
+
+    private MarkupString FirstSubStringInString = new MarkupString(@"
+        public int SubStrStr(string haystack, string needle) {
+            int hLen = haystack.Length;
+            int nLen = needle.Length;
+
+            int[] lps = new int[nLen];
+            lps[0] = 0;
+
+            int a = 1;
+            int b = 0;
+            int c = 0;
+            int len = 0;
+            int result = 0;
+
+            //create the prefix/suffix lps array
+            while (a < nLen) {
+                if (needle[a] == needle[len]) {
+                    len++;
+                    lps[a] = len;
+                    a++;
+                } else {
+                    if (len != 0) {
+                        len = lps[len-1];
+                    } else {
+                        lps[a] = len;
+                        a++;
+                    }
+                }
+            }
+
+            while (c < hLen) {
+                if (needle[b] == haystack[c]) {
+                    b++;
+                    c++;
+                }
+
+                if (b == nLen) {
+                    return c-b;
+                } else if (c < hLen && needle[b] != haystack[c]) {
+                    //we had a mismatch after a certain number of characters
+                    if (b != 0) {
+                        b = lps[b-1];
+                    } else {
+                        c++;
+                    }
+                }
+            }
+
+            return -1;
         }
 ");
 

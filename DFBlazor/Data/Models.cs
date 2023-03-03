@@ -51,4 +51,8 @@
         public string Technologies { get; set; }
 
     }
+
+    public class Stock {
+        public string Name { get; set; }
+    }
 }

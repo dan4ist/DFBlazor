@@ -1,0 +1,15 @@
+﻿@page "/stocks"
+@using DFBlazor.Data
+
+<h3>Stocks</h3>
+
+@code {
+    MainLibrary lib;
+
+    protected override void OnInitialized() {
+        base.OnInitialized();
+
+        lib = new MainLibrary();
+        lib.PostYahoo();
+    }
+}

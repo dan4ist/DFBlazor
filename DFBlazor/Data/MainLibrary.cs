@@ -1,6 +1,7 @@
 ﻿using ImageMagick;
 using System.IO;
 using System.Reflection.Metadata.Ecma335;
+using System.Net.Http;
 
 namespace DFBlazor.Data {
     public class MainLibrary {
@@ -36,5 +37,14 @@ namespace DFBlazor.Data {
         }
         #endregion
 
+
+        public async void PostYahoo() {
+            ConfigurationManager _config = new ConfigurationManager();
+            string key = _config.GetConnectionString("AlphaVantageAPIKey");
+
+            HttpClient client = new HttpClient();
+            var s = await client.GetFromJsonAsync<Stock>("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=IBM&outputsize=compact&apikey=" + key);
+            Console.Write("test");
+        }
     }
 }

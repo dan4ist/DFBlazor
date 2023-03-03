@@ -1,9 +1,10 @@
 ﻿@page "/eav"
 @using DFBlazor.Data;
+<PageTitle>DF:E-A-V</PageTitle>
 
 <h1>E-A-V</h1>
 
-<p>Implementation of an Entity, Attribute, Value database.  No saving currently, just the mechanics of a simple EAV.  EAV DBs are pretty cool as they're infinitely extendable but once the data set is large enough it really falls short.</p>
+<p>Implementation of an Entity, Attribute, Value database.  No saving currently, just the mechanics of a simple EAV.</p>
 
 <div class="row">
     @foreach(EntityModel e in Entities) {
