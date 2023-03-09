@@ -121,6 +121,86 @@
             </div>
         </div>
     </div>
+    <div class="col-sm-6">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header">
+                Minimum Time to Complete Trips
+            </div>
+            <div class="card-body">
+                <div class="card-title">
+                    Explanation: Given an array of bus travel times, determine the minimum amount of time that has to pass to complete a given number of trips.  We use a Binary Search tree to determine the correct minimum trip number from the array.
+                </div>
+                <div class="card-text">
+                    <p>Answer: O(n*log(n))</p>
+                    <CodeSnippet>@MinimumBusTripsInGivenTime</CodeSnippet>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header">
+                Minimum Eating Speed
+            </div>
+            <div class="card-body">
+                <div class="card-title">
+                    Explanation: Given an array of piles of an edible item (lets say Bananas) and an integer in hours, deterine the minimum number of items that must be eaten each hour in order for all items to be eaten in the given time
+                </div>
+                <div class="card-text">
+                    <p>Answer: O(n * log(W)) W == Max items from all piles</p>
+                    <CodeSnippet>@MinimumEatingSpeed</CodeSnippet>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header">
+                Max Area (Container with Most Water)
+            </div>
+            <div class="card-body">
+                <div class="card-title">
+                    Explanation: Given an array of heights find the two lines together that form the largest container and return the maximum amount of water (max area) it could store.
+                </div>
+                <div class="card-text">
+                    <p>Answer: O(n)</p>
+                    <CodeSnippet>@MaxArea</CodeSnippet>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header">
+                Trapping Rain Water
+            </div>
+            <div class="card-body">
+                <div class="card-title">
+                    Explanation: Given an array of heights find the maximum amount of water that can be trapped.
+                </div>
+                <div class="card-text">
+                    <p>Answer: O(n)</p>
+                    <CodeSnippet>@TrappingRainWater</CodeSnippet>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header">
+                Linked List Cycle (find Node)
+            </div>
+            <div class="card-body">
+                <div class="card-title">
+                    Explanation: Given a single linked-list, determine if a loop (or cycle) exists within it and return the node where the cycle (or loop) begins.  Easy to think of the slow-fast pointer but determining the start gets tricky without the math.
+                </div>
+                <div class="card-text">
+                    <p>Answer: O(n) speed; O(1) memory</p>
+                    <CodeSnippet>@linkedListCycleFindNode</CodeSnippet>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @code {
@@ -142,7 +222,6 @@ int[] TwoSum(int[] arr, int target) {
     return new int[0];
 }
         ");
-
     private MarkupString maxProfit = new MarkupString(@"
 int MaxProfit(int[] prices) {
     int minPrice = int.MaxValue;
@@ -157,7 +236,6 @@ int MaxProfit(int[] prices) {
     return maxProfit;
 }
     ");
-
     private MarkupString containsDuplicate = new MarkupString(@"
 bool ContainsDuplicate(int[] nums) {
     HashSet<int> set = new HashSet<int>();
@@ -172,7 +250,6 @@ bool ContainsDuplicate(int[] nums) {
     return false;
 }
     ");
-
     private MarkupString productExceptSelf = new MarkupString(@"
         int[] ProductExceptSelf(int[] nums) {
             int n = nums.Length;
@@ -199,7 +276,6 @@ bool ContainsDuplicate(int[] nums) {
             return result;
         }  
     ");
-
     private MarkupString kadaneMaxSum = new MarkupString(@"
         public int KadaneMaxSum(int[] arr) {
             int maxSum = 0;
@@ -221,7 +297,6 @@ bool ContainsDuplicate(int[] nums) {
             return maxSum;
         }
 ");
-
     private MarkupString maxProduct = new MarkupString(@"
         public int MaxProduct(int[] arr) {
             int maxHere = arr[0];
@@ -238,7 +313,6 @@ bool ContainsDuplicate(int[] nums) {
             return maxSoFar;
         }
 ");
-
     private MarkupString FirstSubStringInString = new MarkupString(@"
 public int SubStrStr(string haystack, string needle) {
     int hLen = haystack.Length;
@@ -288,6 +362,143 @@ public int SubStrStr(string haystack, string needle) {
     }
 
     return -1;
+}
+");
+    private MarkupString MinimumBusTripsInGivenTime = new MarkupString(@"
+public long MinimumTime(int[] time, int totalTrips) {
+    long left = 1;
+    long min = time[0];
+
+    foreach(int t in time) {
+        min = Math.Min(min, t);
+    }
+    long right = totalTrips * min;
+
+    while (left < right) {
+        long mid = (right - left) / 2 + left;
+
+        long total = tripsPossible(time, mid);
+
+        if (total < totalTrips) {
+            left = mid + 1;
+        } else {
+            right = mid;
+        }
+    }
+
+    return left;
+}
+
+public long tripsPossible(int[] time, long limit) {
+    long t = 0;
+    foreach(int a in time) {
+        t += limit / a;
+    }
+    return t;
+}
+");
+    private MarkupString MinimumEatingSpeed = new MarkupString(@"
+public int MinEatingSpeed(int[] piles, int h) {
+    int start = 1;
+    int end = piles.Max();
+
+    while(start < end) {
+        int mid = start + (end - start) / 2;
+
+        if (CheckPile(piles, mid, h) == true) {
+            end = mid;
+        } else {
+            start = mid + 1;
+        }
+    }
+    return end;
+}
+
+public bool CheckPile(int[] piles, int mid, int h) {
+    int time = 0;
+
+    for(int i = 0; i < piles.Length; i++) {
+        if (piles[i] % mid != 0) {
+            time += ((piles[i] / mid) + 1);
+        } else {
+            time += (piles[i] / mid);
+        }
+    }
+
+    if (time <= h) {
+        return true;
+    } else {
+        return false;
+    }
+}
+");
+    private MarkupString MaxArea = new MarkupString(@"
+public int MaxArea(int[] height) {
+    int left = 0;
+    int right = height.Length - 1;
+
+    int maxArea = 0;
+
+    while (left < right) {
+        int area;
+        if (height[left] <= height[right]) {
+            area = height[left] * (right - left);
+            left++;
+        } else {
+            area = height[right] * (right - left);
+            right--;
+        }
+
+        if(area > maxArea) {
+            maxArea = area;
+        }
+    }
+
+    return maxArea;
+}
+");
+    private MarkupString TrappingRainWater = new MarkupString(@"
+public int Trap(int[] height) {
+    int left = 0;
+    int right = height.Length-1;
+
+    int leftMax = 0;
+    int rightMax = 0;
+
+    int water = 0;
+
+    while (left <= right) {//loop through until all indices have been traversed
+        if (rightMax <= leftMax) {//whos shorter
+            water += Math.Max(0, rightMax - height[right]);
+            rightMax = Math.Max(rightMax, height[right]);
+            right--;
+        } else {
+            water += Math.Max(0, leftMax - height[left]);
+            leftMax = Math.Max(leftMax, height[left]);
+            left++;
+        }
+    }
+    return water;
+}
+");
+    private MarkupString linkedListCycleFindNode = new MarkupString(@"
+public ListNode DetectCycle(ListNode head) {
+
+    ListNode slow = head, fast = head;
+    while (fast != null && fast.next != null) {
+        fast = fast.next.next;
+        slow = slow.next;
+
+        if (slow == fast) {
+            while (head != fast) {
+                head = head.next;
+                fast = fast.next;
+            }
+            return head;
+        }
+
+    }
+    return null;
 }
 ");
 
