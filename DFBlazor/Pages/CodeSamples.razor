@@ -201,6 +201,38 @@
             </div>
         </div>
     </div>
+    <div class="col-sm-6">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header">
+                Linked List Random Node Value
+            </div>
+            <div class="card-body">
+                <div class="card-title">
+                    Explanation: Given a single linked-list, create a function that will return a random integer from the list with equal random probability.  (this question kinds sucks)
+                </div>
+                <div class="card-text">
+                    <p>Answer: O(n) speed</p>
+                    <CodeSnippet>@linkedListRandom</CodeSnippet>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header">
+                Completeness of Binary Tree
+            </div>
+            <div class="card-body">
+                <div class="card-title">
+                    Explanation: Given a binary tree, determine if it is complete (i.e., nodes have two children always unless it is the end of the tree).  We solve this with an in-order tree traversal using a Queue and flag to catch edge cases.
+                </div>
+                <div class="card-text">
+                    <p>Answer: O(n) speed</p>
+                    <CodeSnippet>@completeBinaryTree</CodeSnippet>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @code {
@@ -499,6 +531,71 @@ public ListNode DetectCycle(ListNode head) {
 
     }
     return null;
+}
+");
+
+    private MarkupString linkedListRandom = new MarkupString(@"
+public class Solution {
+    private ListNode head;
+    private int n;
+    public Solution(ListNode h) {
+        head = h;
+        GetLength();
+    }
+
+    public void GetLength() {
+        ListNode temp = head;
+        while (temp != null) {
+            n++;
+            temp = temp.next;
+        }
+    }
+
+    public int GetRandom() {
+        int r = new Random().Next(0, n);
+        ListNode rand = head;
+
+        while (r > 0) {
+            rand = rand.next;
+            r--;
+        }
+
+        return rand.val;
+    }
+}
+");
+    private MarkupString completeBinaryTree = new MarkupString(@"
+public bool CheckLevel(TreeNode node) {
+    Queue<TreeNode> queue = new Queue<TreeNode>();
+    queue.Enqueue(node);
+    bool flag = true;
+
+    while (queue.Count != 0) {
+        TreeNode temp = queue.Dequeue();
+
+        if (temp.right != null && temp.left == null) {
+            return false;
+        }
+
+        if (temp.left != null) {
+            queue.Enqueue(temp.left);
+            if (!flag) {
+                return false;
+            }
+        } else {
+            flag = false;
+        }
+
+        if (temp.right != null) {
+            queue.Enqueue(temp.right);
+            if (!flag) {
+                return false;
+            }
+        } else {
+            flag = false;
+        }
+    }
+    return true;
 }
 ");
 

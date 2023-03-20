@@ -1,4 +1,6 @@
-﻿namespace DFBlazor.Data {
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace DFBlazor.Data {
 
     public class EntityModel {
         public int ID { get; set; }
@@ -54,5 +56,15 @@
 
     public class Stock {
         public string Name { get; set; }
+    }
+
+    public class NoteItem {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string AuthorID { get; set; }
+        public string Author { get; set; }
+        public string HTML { get; set; }
+        public DateTime? Created { get; set; }
+        public DateTime? Updated { get; set; }
     }
 }

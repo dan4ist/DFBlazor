@@ -1,0 +1,33 @@
+﻿@page
+@model DFBlazor.Areas.Identity.Pages.Account.RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>@ViewData["Title"]</h1>
+<div class="row">
+    <div class="col-4">
+        <form id="account" method="post">
+            <div asp-asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-floating">
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
+                <label asp-for="Input.Email" class="form-label"></label>
+                <span asp-validation-formaction="Input.Email" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-floating">
+                <input asp-for="Input.Password" class="form-control" autocomplete="username" aria-required="true" />
+                <label asp-for="Input.Password" class="form-label"></label>
+                <span asp-validation-formaction="Input.Password" class="text-danger"></span>
+                <small>Minimum length of 5 characters, absolutely no other requirements than that.</small>
+            </div>
+            <br />
+            <div>
+                <button id="login-submit" type="submit" class="w-100 btn btn-primary">Register</button>
+                <div>
+                    <small><a href="~/">Go home</a></small>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
