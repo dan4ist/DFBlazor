@@ -1,0 +1,83 @@
+﻿@using DFBlazor.Data
+@using DFBlazor.Services
+@using Blazored.TextEditor
+@inject NoteService _notes
+
+<span>
+    <input type="text" class="form-control" value="@noteName" />
+</span>
+<BlazoredTextEditor @ref="@quillHTML">
+    <ToolbarContent>
+        <select class="ql-header">
+            <option selected=""></option>
+            <option value="1"></option>
+            <option value="2"></option>
+            <option value="3"></option>
+            <option value="4"></option>
+            <option value="5"></option>
+        </select>
+        <span class="ql-formats">
+            <button class="ql-bold"></button>
+            <button class="ql-italic"></button>
+            <button class="ql-underline"></button>
+            <button class="ql-strike"></button>
+        </span>
+        <span class="ql-formats">
+            <select class="ql-color"></select>
+            <select class="ql-background"></select>
+        </span>
+        <span class="ql-formats">
+            <button class="ql-list" value="ordered"></button>
+            <button class="ql-list" value="bullet"></button>
+        </span>
+        <span class="ql-formats">
+            <button class="ql-link"></button>
+        </span>
+    </ToolbarContent>
+    <EditorContent>
+        Type Here
+        <br />
+        <br />
+        <br />
+        <br />
+    </EditorContent>
+</BlazoredTextEditor>
+<br />
+<div class="row">
+    <div class="col">
+        <button class="btn btn-primary w-100" @onclick="SaveNote">Save</button>
+    </div>
+    <div class="col form-check form-switch">
+        <input class="form-check-input" type="checkbox" checked="@isPublished" />
+        <label class="form-check-label">Publish?</label>
+    </div>
+</div>
+@code {
+    [Parameter]
+    public NoteItem note { get; set; }
+    private BlazoredTextEditor quillHTML;
+    private string noteName;
+    private bool isPublished = false;
+
+    protected override void OnInitialized() {
+        base.OnInitialized();
+
+        if (quillHTML == null) {
+            quillHTML = new BlazoredTextEditor();
+        }
+
+        if (note == null) {
+            note = new NoteItem();
+        }
+    }
+
+    private async void SaveNote() {
+        note.HTML = await quillHTML.GetHTML();
+        note.Name = noteName;
+        note.IsPublished = isPublished;
+
+        await _notes.SaveNote(note);
+        int id = note.ID;
+    }
+
+}

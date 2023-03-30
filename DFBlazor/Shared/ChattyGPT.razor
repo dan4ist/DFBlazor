@@ -1,0 +1,97 @@
+﻿@using System.Text
+@using DFBlazor.Services
+@inject ChatGPTService chatService
+
+<div class="row">
+    <div class="col-9">
+        <input type="text" class="form-control" @bind="query" placeholder="Enter your chat here..." />
+    </div>
+    <div class="col-3">
+        <button type="button" class="btn btn-primary w-100" @onclick="GetResponse">Chat</button>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col">
+        <label class="form-label">Model (Da Vinci or GPT 3.5):</label>
+        <select @bind="model" class="form-control">
+            <option value="text-davinci-003">Text Davinci 003</option>
+            <option value="gpt-3.5-turbo" selected>GPT 3.5 Turbo</option>
+        </select>
+    </div>
+    <div class="col">
+        <label class="form-label">Temperature (0-2; 1 default):</label>
+        <input type="range" class="form-range" min="0" max="2" step="0.5" @bind="temperature" disabled />
+    </div>
+    <div class="col">
+        <label class="form-label">Tokens (Max 4,096):</label>
+        <input type="number" class="form-control" @bind="tokens" disabled />
+    </div>
+</div>
+<br />
+<h5>History</h5>
+@foreach(Tuple<string, string> qa in questionsAnswers) {
+    <hr />
+    <div class="row">
+        <div class="col-3">
+            <p style="color:coral">You wrote:</p>
+            @qa.Item1
+        </div>
+        <div class="col-9">
+            <p style="color:darkslateblue">Your future overlord replied:</p>
+            @qa.Item2
+        </div>
+    </div>
+}
+@if (working) {
+    <div class="lds-facebook">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+}
+@code {
+    public string query;
+    public string model;
+    public double temperature;
+    public int tokens;
+    public IList<Tuple<string, string>> questionsAnswers;
+    public bool working = false;
+
+    protected override void OnInitialized() {
+        questionsAnswers = new List<Tuple<string, string>>();
+        query = "";
+        temperature = 1;
+        tokens = 100;
+    }
+
+    private async Task GetResponse() {
+        working = true;
+        StateHasChanged();
+
+        if (model == "gpt-3.5-turbo") {
+            try {
+                string response = await chatService.GetResponseGPT35(query);
+                Tuple<string, string> temp = new Tuple<string, string>(query, response);
+
+                questionsAnswers.Add(temp);
+                query = "";
+            } catch (Exception ex) {
+                questionsAnswers.Add(new Tuple<string, string>(query, ex.Message));
+            }
+        } else {
+            try {
+                string response = await chatService.GetResponseDV(query);
+                Tuple<string, string> temp = new Tuple<string, string>(query, response);
+
+                questionsAnswers.Add(temp);
+                query = "";
+            } catch (Exception ex) {
+                questionsAnswers.Add(new Tuple<string, string>(query, ex.Message));
+            }
+        }
+
+        working = false;
+        StateHasChanged();
+    }
+}

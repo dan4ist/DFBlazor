@@ -1,0 +1,58 @@
+﻿@page "/notepad"
+@using DFBlazor.Data;
+@using System.Security.Claims
+@inject AuthenticationStateProvider _authState
+
+<h3>NotePad</h3>
+<br />
+<button type="button" @onclick="AddNote" class="btn btn-success">New Note</button>
+<br />
+
+@foreach(NoteItem n in notes) {
+    <div class="row">
+        <div class="col">   
+            <div class="card">
+                <div class="card-header">
+                    @(n.Name == null ? "TBD"   : n.Name)
+                </div>
+                <div class="card-body">
+                    <Note note="n"></Note>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    public IList<NoteItem> notes;
+
+    protected override void OnInitialized() {
+        base.OnInitialized();
+
+        NoteItem n = new NoteItem();
+        notes = new List<NoteItem>();
+        notes.Add(n);
+    }
+
+    protected override async Task OnInitializedAsync() {
+        await base.OnInitializedAsync();
+        try {
+
+            var authstate = await _authState.GetAuthenticationStateAsync();
+            var user = authstate.User;
+            var name = user.Identity.Name;
+            var id = user.FindFirstValue(ClaimTypes.NameIdentifier);
+            notes[0].Author = name;
+            notes[0].AuthorID = id;
+
+        } catch (Exception ex) {
+            //thats fine were not authenticated for now
+        }
+    }
+
+    private void AddNote() {
+        NoteItem temp = new NoteItem();
+        notes.Add(temp);
+    }
+
+}

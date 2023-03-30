@@ -2,7 +2,25 @@
 
 <PageTitle>DF:Counter</PageTitle>
 
-<AuthorizeView>
+<AuthorizeView Roles="admin">
+    <Authorized>
+        <p role="status">You are logged in as an administrator via Roles</p>
+    </Authorized>
+    <NotAuthorized>
+        <p role="status">No admin detected</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+<AuthorizeView Policy="AdminOnly">
+    <Authorized>
+        <p role="status">You are logged in as an administrator via Claims</p>
+    </Authorized>
+    <NotAuthorized>
+        <p role="status">No admin detected</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+<AuthorizeView Policy="SupportedCityPolicy">
     <Authorized>
         <h1>Counter</h1>
 

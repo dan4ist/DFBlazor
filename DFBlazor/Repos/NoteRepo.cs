@@ -2,15 +2,17 @@
 using System.Data;
 using DFBlazor.Data;
 using System.Data.SqlClient;
+using Microsoft.Identity.Client;
 
 namespace DFBlazor.Repos {
 
     public interface INoteRepo {
+
         Task<int> AddNote(NoteItem note);
         Task<bool> UpdateNote(NoteItem note);
         Task<bool> DeleteNote(int id);
-        NoteItem GetNote(int id);
-        Task<IList<NoteItem>> GetNotes();
+        Task<NoteItem> GetNoteItemByID(int id);
+        Task<IList<NoteItem>> GetAllNotes();
         Task<IList<NoteItem>> GetNotesByAuthorID(int id);
     }
 
@@ -106,18 +108,20 @@ namespace DFBlazor.Repos {
             }
         }
 
-        public async Task<NoteItem> GetNoteItem(int id) {
-
+        public async Task<NoteItem> GetNoteItemByID(int id) {
+            var item = new NoteItem();
+            return item;
         }
 
         public async Task<IList<NoteItem>> GetAllNotes() {
-
+            IList<NoteItem> items = new List<NoteItem>();
+            return items;
         }
 
         public async Task<IList<NoteItem>> GetNotesByAuthorID(int id) {
-
+            IList<NoteItem> items = new List<NoteItem>();
+            return items;
         }
-
     }
 
 }

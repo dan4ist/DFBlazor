@@ -64,6 +64,7 @@ namespace DFBlazor.Data {
         public string AuthorID { get; set; }
         public string Author { get; set; }
         public string HTML { get; set; }
+        public bool IsPublished { get; set; }
         public DateTime? Created { get; set; }
         public DateTime? Updated { get; set; }
     }

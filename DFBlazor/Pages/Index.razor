@@ -2,21 +2,26 @@
 
 <PageTitle>DF:Index</PageTitle>
 
-<h1>Hello,</h1>
+<AuthorizeView>
+    <Authorized>
+        <h1>Hello @context.User.Identity.Name,</h1>
+    </Authorized>
+    <NotAuthorized>
+        <h1>Hello,</h1>
+    </NotAuthorized>
+</AuthorizeView>
 <br />
-Welcome to my personal site.  I am hoping to build this out over time with examples of my work.  
-<br />
+Welcome to my personal site.  I am hoping to build this out over time with examples of my work.  As of this writing (March 2023), I have grown the site to include 
+authentication and authorization utilizing Entity Framework, 
+rich text editing utilizing QuillJS
 <br />
 I am currently working as a senior solutions architect/senior software engineer at the American Institutes for Research, 
 an education-focused not-for-profit organization located in Washington, D.C.
 <br />
-<br />
 This site will combine a few passions, hopefully, as well as some information about myself 
 and some code examples in case I ever find myself in an open-web interview :D
 <br />
-<br />
 Have a look around!  This site's github can be found <a href="https://github.com/dan4ist/DFBlazor">over here</a>.
-<br />
 <br />
 <br />
 <div class="row">

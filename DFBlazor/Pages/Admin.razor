@@ -1,0 +1,23 @@
+﻿<h3>Admin</h3>
+<AuthorizeView Roles="admin">
+    <Authorized>
+        <h1>Administration</h1>
+        <p>hmmmm....</p>
+    </Authorized>
+    <NotAuthorized>
+        <p role="status">You are not authorized to view this content</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+<AuthorizeView Policy="adminOnly">
+    <Authorized>
+        <h1>Administration</h1>
+        <p>hmmmm....</p>
+    </Authorized>
+    <NotAuthorized>
+        <p role="status">You are not authorized to view this content</p>
+    </NotAuthorized>
+</AuthorizeView>
+@code {
+
+}

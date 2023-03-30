@@ -1,4 +1,6 @@
 using DFBlazor.Data;
+using DFBlazor.Repos;
+using DFBlazor.Services;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -22,13 +24,32 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
     options.Password.RequireLowercase = false;
     options.Password.RequireNonAlphanumeric = false;
     options.SignIn.RequireConfirmedEmail = false;
-}).AddEntityFrameworkStores<DataContext>();
+})
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<DataContext>();
 //MSIDENTITY
 
+//CLAIMS
+builder.Services.AddAuthorization(options => {
+    options.AddPolicy("SupportedCityPolicy", policy => policy.RequireClaim("city", "dc"));
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("admin"));
+});
+//CLAIMS
+
+
+builder.Services.AddTransient<INoteRepo, NoteRepo>();
 builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddSingleton<NoteService>();
 //builder.Services.AddHttpClient();
 
 
+//ChatGPT
+builder.Services.AddSingleton<ChatGPTService>(cp => {
+    var config = cp.GetRequiredService<IConfiguration>();
+    var apiUrl = config.GetValue<string>("ChatGPTSettings:ApiURL");
+    var apiKey = config.GetValue<string>("ChatGPTSettings:ApiKey");
+    return new ChatGPTService(apiUrl, apiKey);
+});
 
 builder.Services.AddFluxor(o => {
     o.ScanAssemblies(typeof(Program).Assembly);
